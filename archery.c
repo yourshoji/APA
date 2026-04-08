@@ -40,7 +40,7 @@ int main(void)
         printf("MALLOC Failed!\n");
         return 1;
     }
-    
+     
     printf("Memory Allocated!\n");
 
     // printf("%d\n", rings);
