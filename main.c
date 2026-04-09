@@ -31,7 +31,7 @@ int main(void)
         "        \\/                \\/ \n"
         "                            \033[0m v1.0\n   ");
 
-    printf("\n \033[1;31m[ ARCHERY ACCURACY CALCULATOR ]\033[0m\n");
+    printf("\n \033[1;31m[ ARCHERY PERFORMANCE ANALYTICS ]\033[0m\n");
     printf(" ----------------------------------------\n");
     printf(" Use this tool to track precision across\n");
     printf(" 5, 6, and 10-ring target configurations.\n");
