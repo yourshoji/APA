@@ -4,12 +4,17 @@
 
 // #define MAX_SCORES 6
 uint8_t rings = 0;
-uint8_t* scores = NULL;
+uint16_t* scores = NULL;
 uint8_t counter=0;
 uint16_t total_arrows = 0;
 uint16_t max_score = 0;
 uint16_t final_score = 0;
 float accuracy = 0.0f;
+
+// function prototypes
+int ring10(uint16_t* _score, uint16_t* _arrows, uint16_t* _max_score);
+int ring6(uint16_t* _score, uint16_t* _arrows, uint16_t* _max_score);
+int ring5(uint16_t* _score, uint16_t* _arrows, uint16_t* _max_score);
 
 int main(void)
 {
@@ -20,7 +25,7 @@ int main(void)
         "/    |    \\    |   \\     \\____\n"
         "\\____|__  /____|_  /\\______  / \n"
         "        \\/       \\/       \\/  \n"
-        "                            v1.0\n   "    
+        "                            v1.0\n   "
     );
 
     printf("\nThe Accuracy Calculator For Archery.\n");
@@ -33,7 +38,7 @@ int main(void)
 
     // use malloc to grab the empty space big enough for the value of "rings"
     // use malloc cuz it can be over-written during runtime
-    scores = (uint8_t*)malloc(rings * sizeof(uint8_t));
+    scores = (uint16_t*)malloc(rings * sizeof(uint16_t));
 
     if (scores == NULL)
     {
@@ -51,7 +56,7 @@ int main(void)
     {
         printf("Ring %d: ", counter + 1);
 
-        if (scanf("%hhu", &scores[counter]) == 1) counter++;
+        if (scanf("%hu", &scores[counter]) == 1) counter++;
         else 
         {
             printf("Invalid input. Please enter a number.\n");
@@ -65,17 +70,21 @@ int main(void)
     // Clearance
     // printf("\033[H\033[J");
 
-    for (int i=0; i < rings; i++)
-    {
-        // Find Total Arrows
-        total_arrows += scores[i];
+    if (rings == 5) ring5(&final_score, &total_arrows, &max_score);
+    else if (rings == 6) ring6(&final_score, &total_arrows, &max_score);
+    else ring10(&final_score, &total_arrows, &max_score);
 
-        // Find Finalized Score
-        final_score += scores[i] * (i + 1);
-    }
+    // for (int i=0; i < rings; i++)
+    // {
+    //     // Find Total Arrows
+    //     total_arrows += scores[i];
+
+    //     // Find Finalized Score
+    //     final_score += scores[i] * (i + 1);
+    // }
     
-    // Find Max Score
-    max_score = total_arrows * rings;
+    // // Find Max Score
+    // max_score = total_arrows * rings;
     
     // Find Accuracy
     if (max_score > 0)
@@ -98,26 +107,45 @@ int main(void)
     getchar();
 }
 
-void ring10(uint8_t rings_param)
+int ring10(uint16_t* _score, uint16_t* _arrows, uint16_t* _max_score)
 {
-    for (int i=0; i < rings_param; i++)
+    for (int i=0; i < 10; i++)
     {
+        // printf("%d", scores[i]);
         // Find Total Arrows
-        total_arrows += scores[i];
-
-        // Find Finalized Score
-        final_score += scores[i] * (i + 1);
+        *_arrows += scores[i];
+        // Find Final Score
+        *_score += scores[i] * (i + 1);
+        // Find Max Score (10 = max score)
+        *_max_score = *_arrows * 10; 
     }
 }
 
-void ring6(uint8_t rings_param)
+int ring6(uint16_t* _score, uint16_t* _arrows, uint16_t* _max_score)
 {
-    for (int i=5; i < (i + 5); i++)
+    // loop all the items
+    for (int i=0; i < 6; i++)
     {
+        // printf("%d", scores[i]);
         // Find Total Arrows
-        total_arrows += scores[i];
+        *_arrows += scores[i];
+        // Find Final Score
+        *_score += scores[i] * (i + 5);
+        // Find Max Score (10 = max score)
+        *_max_score = *_arrows * 10; 
+    }
+}
 
-        // Find Finalized Score
-        final_score += scores[i] * (i + 1);
+int ring5(uint16_t* _score, uint16_t* _arrows, uint16_t* _max_score)
+{
+    for (int i=0; i < 5; i++)
+    {
+        // printf("%d", scores[i]);
+        // Find Total Arrows
+        *_arrows += scores[i];
+        // Find Final Score
+        *_score += scores[i] * (i + 1);
+        // Find Max Score (10 = max score)
+        *_max_score = *_arrows * 5; 
     }
 }
